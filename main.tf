@@ -505,7 +505,7 @@ resource "aws_emr_instance_group" "task" {
 }
 
 module "dns_master" {
-  source  = "https://github.com/dusty73/terraform-aws-route53-cluster-hostname.git?ref=upgrade_aws"
+  source  = "git::https://github.com/dusty73/terraform-aws-route53-cluster-hostname.git?ref=upgrade_aws"
   enabled = var.enabled && var.zone_id != null && var.zone_id != "" ? true : false
   name    = var.master_dns_name != null && var.master_dns_name != "" ? var.master_dns_name : "emr-master-${var.name}"
   zone_id = var.zone_id
