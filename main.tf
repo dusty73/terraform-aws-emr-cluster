@@ -104,7 +104,7 @@ resource "aws_security_group" "managed_master" {
 
   # EMR will update "ingress" and "egress" so we ignore the changes here
   lifecycle {
-    ignore_changes = ["ingress", "egress"]
+    ignore_changes = [ingress, egress]
   }
 }
 
@@ -130,7 +130,7 @@ resource "aws_security_group" "managed_slave" {
 
   # EMR will update "ingress" and "egress" so we ignore the changes here
   lifecycle {
-    ignore_changes = ["ingress", "egress"]
+    ignore_changes = [ingress, egress]
   }
 }
 
@@ -156,7 +156,7 @@ resource "aws_security_group" "managed_service_access" {
 
   # EMR will update "ingress" and "egress" so we ignore the changes here
   lifecycle {
-    ignore_changes = ["ingress", "egress"]
+    ignore_changes = [ingress, egress]
   }
 }
 
@@ -392,6 +392,7 @@ resource "aws_emr_cluster" "default" {
 
   termination_protection            = var.termination_protection
   keep_job_flow_alive_when_no_steps = var.keep_job_flow_alive_when_no_steps
+  step_concurrency_level            = var.step_concurrency_level
   ebs_root_volume_size              = var.ebs_root_volume_size
   custom_ami_id                     = var.custom_ami_id
   visible_to_all_users              = var.visible_to_all_users
@@ -464,7 +465,7 @@ resource "aws_emr_cluster" "default" {
 
   # configurations_json changes are ignored because of terraform bug. Configuration changes are applied via local.bootstrap_action.
   lifecycle {
-    ignore_changes = ["kerberos_attributes", "step", "configurations_json"]
+    ignore_changes = [kerberos_attributes, step, configurations_json]
   }
 }
 
@@ -491,7 +492,7 @@ resource "aws_emr_instance_group" "task" {
 }
 
 module "dns_master" {
-  source  = "git::https://github.com/cloudposse/terraform-aws-route53-cluster-hostname.git?ref=tags/0.3.0"
+  source  = "git::https://github.com/cloudposse/terraform-aws-route53-cluster-hostname.git?ref=tags/0.5.0"
   enabled = var.enabled && var.zone_id != null && var.zone_id != "" ? true : false
   name    = var.master_dns_name != null && var.master_dns_name != "" ? var.master_dns_name : "emr-master-${var.name}"
   zone_id = var.zone_id
