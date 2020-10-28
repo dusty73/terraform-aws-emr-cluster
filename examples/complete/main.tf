@@ -3,15 +3,15 @@ provider "aws" {
 }
 
 module "vpc" {
-  source     = "git::https://github.com/cloudposse/terraform-aws-vpc.git?ref=tags/0.16.1"
+  source     = "git::https://github.com/cloudposse/terraform-aws-vpc.git?ref=tags/0.17.0"
   namespace  = var.namespace
   stage      = var.stage
   name       = var.name
-  cidr_block = "172.16.0.0/16"
+  cidr_block = "10.0.55.0/16"
 }
 
 module "subnets" {
-  source               = "git::https://github.com/cloudposse/terraform-aws-dynamic-subnets.git?ref=tags/0.26.0"
+  source               = "git::https://github.com/cloudposse/terraform-aws-dynamic-subnets.git?ref=tags/0.30.0"
   availability_zones   = var.availability_zones
   namespace            = var.namespace
   stage                = var.stage
@@ -24,7 +24,7 @@ module "subnets" {
 }
 
 module "s3_log_storage" {
-  source        = "git::https://github.com/cloudposse/terraform-aws-s3-log-storage.git?ref=tags/0.13.1"
+  source        = "git::https://github.com/cloudposse/terraform-aws-s3-log-storage.git?ref=tags/0.14.0"
   region        = var.region
   namespace     = var.namespace
   stage         = var.stage
