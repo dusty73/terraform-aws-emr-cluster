@@ -502,6 +502,14 @@ resource "aws_emr_instance_group" "task" {
   bid_price          = var.task_instance_group_bid_price
   ebs_optimized      = var.task_instance_group_ebs_optimized
   autoscaling_policy = var.task_instance_group_autoscaling_policy
+
+  # with autoscaling set, instance_count value varies during EMR lifecycle, we get rid
+  # of state changes in order to avoid unwanted resizing
+  lifecycle {
+    ignore_changes = [
+      instance_count,
+    ]
+  }
 }
 
 module "dns_master" {
